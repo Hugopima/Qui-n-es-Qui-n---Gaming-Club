@@ -2,54 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quién es Quién - Gaming Club</title>
     <style>
         body { background: #1a1a1a; color: white; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
-        .bar { background: #000; width: 100%; padding: 15px; text-align: center; border-bottom: 2px solid #00ffcc; position: sticky; top: 0; z-index: 100; }
+        .bar { background: #000; width: 100%; padding: 15px; text-align: center; border-bottom: 2px solid #00ffcc; margin-bottom: 10px; }
         
+        /* Contenedor con el tamaño exacto que viste en Paint */
         .board-wrapper {
             position: relative;
-            margin: 20px auto;
-            width: 95vw; 
-            max-width: 968px; /* Tamaño que viste en Paint */
-            aspect-ratio: 968 / 543;
-            background-image: url('tablero.jpg'); 
+            width: 968px; 
+            height: 543px;
+            background-image: url('image_3eeb8b.jpg'); 
             background-size: 100% 100%;
             border: 4px solid #333;
         }
 
-        .overlay {
-            position: absolute;
-            /* CÁLCULO SOBRE 968x543 */
-            top: 11.78%;   /* 64px / 543px */
-            left: 4.95%;   /* 48px / 968px */
-            width: 90%;    
-            height: 82%;   
-            
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            
-            column-gap: 1.5%; 
-            row-gap: 7.5%;      
-        }
-
         .cell {
+            position: absolute;
             cursor: pointer;
-            border-radius: 10px;
-            /* Altura: (139-64)=75px. 75/543 es aprox 13%. 
-               Usamos 70% del espacio del grid para no tapar el nombre */
-            height: 72%; 
-            width: 88%;
-            justify-self: center;
-            align-self: start;
-            transition: 0.2s;
+            border-radius: 12px;
+            /* Tamaño de Hugo: 124-48 = 76px ancho. 139-64 = 75px alto */
+            width: 76px;
+            height: 70px; /* Un poco más corto para no tapar el nombre */
+            transition: 0.1s;
         }
 
         .cell.off {
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.96);
             border: 2px solid #ff0000;
+            box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
         .secret-area { margin-bottom: 10px; font-size: 18px; color: #00ffcc; }
@@ -64,19 +45,32 @@
         <button onclick="clearBoard()">🔄 RESET</button>
     </div>
 
-    <div class="board-wrapper">
-        <div class="overlay" id="grid"></div>
-    </div>
+    <div class="board-wrapper" id="board"></div>
 
     <script>
         const names = ["Hugo", "Alejandro", "Alberto", "Manuel", "Andrea", "Carlos Manuel", "Carlos Morilla", "Lucas", "Sergio", "Cristian", "Ana Belén", "Nyx", "INFINITYCRAFT", "SrNugget", "Gaming Club Clips", "Skibidi Toilet", "Don Pollo", "Fideos", "Adivina el Animatrónico", "Emotes Diarios", "Portal Nether", "Desafios del Club", "Mes del Aprecio", "Squid Game", "TriatlonINT", "Level UP", "Cazón (GCS3)", "UwU (GCS3)", "Podrido (GCS3)", "Xiao (MegaDeath)", "Caballos Explosivos", "BOPL", "Gallina (UCH)", "Semibot", "Tripulante", "Bonnie", "Janet", "Piper", "Shelly", "Bea"];
-        const grid = document.getElementById('grid');
-        for (let i = 0; i < 40; i++) {
-            const d = document.createElement('div');
-            d.className = 'cell';
-            d.onclick = () => d.classList.toggle('off');
-            grid.appendChild(d);
+
+        const board = document.getElementById('board');
+        
+        // COORDENADAS MANUALES POR FILA (Para que no se muevan abajo)
+        const rowTops = [64, 166, 268, 370]; // Altura Y de cada fila (ajustada a tu imagen)
+        const startX = 48; // Tu X de Hugo
+        const colGap = 88; // Distancia entre el inicio de un cuadro y el siguiente (76 ancho + 12 gap)
+
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 10; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                
+                // Posicionamiento quirúrgico
+                cell.style.left = (startX + (c * colGap)) + "px";
+                cell.style.top = rowTops[r] + "px";
+                
+                cell.onclick = () => cell.classList.toggle('off');
+                board.appendChild(cell);
+            }
         }
+
         let secret = "";
         function mix() {
             secret = names[Math.floor(Math.random() * names.length)];
@@ -92,5 +86,3 @@
     </script>
 </body>
 </html>
-
-
