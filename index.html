@@ -10,23 +10,20 @@
         .board-wrapper {
             position: relative;
             margin: 20px auto;
-            /* Medidas exactas de tu Paint */
             width: 968px; 
             height: 543px;
             background-image: url('tablero.jpg'); 
-            background-size: 968px 543px; /* Forzado a píxeles, no a porcentaje */
-            background-repeat: no-repeat;
-            /* Eliminamos bordes que puedan desplazar la imagen interna */
-            outline: 4px solid #333; 
+            background-size: 100% 100%;
+            outline: 4px solid #333;
         }
 
         .cell {
             position: absolute;
             cursor: pointer;
             border-radius: 12px;
-            width: 77px;
+            width: 76px; /* Tu medida exacta */
             height: 75px; 
-            box-sizing: border-box; /* Para que el borde no sume tamaño */
+            box-sizing: border-box;
             z-index: 10;
         }
 
@@ -54,25 +51,31 @@
 
         const board = document.getElementById('board-container');
         
-        // --- COORDENADAS REGLA DE PAINT ---
-        const startX = 48;    
-        const startY = 64;    
-        const cellW = 77;     
-        const cellH = 75;     
+        // --- MEDIDAS MANUALES POR FILA ---
+        const startX = 48;
+        const startY = 64;
+        const cellW = 76;
+        const cellH = 75; // Altura para cubrir la cara
+        const hGap = 13;
         
-        // Gap Horizontal: Distancia de borde a borde (89.2)
-        // Gap Vertical: Espacio en blanco entre filas (39)
-        const hGap = 89.2;    
-        const vGap = 39;      
+        // Calculamos las alturas Y una a una para que la 4ª sea distinta
+        const rowPositionsY = [
+            startY,                          // Fila 1: 64
+            startY + cellH + 39,             // Fila 2: 178
+            startY + (cellH + 39) * 2,       // Fila 3: 292
+            startY + (cellH + 39) * 2 + (cellH + 32) // Fila 4: 292 + 75 + 32 = 399
+        ];
 
         for (let r = 0; r < 4; r++) {
             for (let c = 0; c < 10; c++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 
-                // Cálculo de posición
-                cell.style.left = Math.round(startX + (c * hGap)) + "px";
-                cell.style.top = Math.round(startY + (r * (cellH + vGap))) + "px";
+                // Horizontal: constante (Ancho + 13)
+                cell.style.left = (startX + (c * (cellW + hGap))) + "px";
+                
+                // Vertical: según nuestro array de alturas
+                cell.style.top = rowPositionsY[r] + "px";
                 
                 cell.onclick = () => cell.classList.toggle('off');
                 board.appendChild(cell);
