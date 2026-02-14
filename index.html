@@ -21,7 +21,7 @@
             position: absolute;
             cursor: pointer;
             border-radius: 12px;
-            width: 76px;
+            width: 75px; /* ANCHO EXACTO 75 */
             height: 75px; 
             box-sizing: border-box;
             z-index: 10;
@@ -53,15 +53,15 @@
         
         const startX = 48;
         const startY = 64;
-        const cellW = 76;
+        const cellW = 75; // ANCHO 75
         const cellH = 75;
-        const hGap = 12; // DISMINUIDO 1 PÍXEL AQUÍ
+        const hGap = 13; // GAP 13 -> Total 88px de salto
         
         const rowPositionsY = [
             startY,
             startY + cellH + 39,
             startY + (cellH + 39) * 2,
-            startY + (cellH + 39) * 2 + (cellH + 32)
+            startY + (cellH + 39) * 2 + (cellH + 32) // Fila 4 con el ajuste de 32
         ];
 
         for (let r = 0; r < 4; r++) {
