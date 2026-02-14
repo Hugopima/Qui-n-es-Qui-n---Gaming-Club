@@ -2,54 +2,44 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Quién es Quién - Gaming Club Multirival</title>
+    <title>Quién es Quién - Gaming Club Multitablero</title>
     <style>
         body { background: #1a1a1a; color: white; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
         
-        /* Barra de control fija */
+        /* Barra fija con TU personaje */
         .bar { 
             background: #000; width: 100%; padding: 15px; text-align: center; 
             border-bottom: 2px solid #00ffcc; position: sticky; top: 0; z-index: 100;
-            display: flex; justify-content: center; align-items: center; gap: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
         }
 
-        .controls { display: flex; align-items: center; gap: 10px; }
-        
+        .secret-area { font-size: 20px; font-weight: bold; color: #00ffcc; }
+        #char-display { background: #333; padding: 5px 15px; cursor: pointer; border-radius: 5px; border: 1px dashed #00ffcc; }
+
+        .controls { display: flex; align-items: center; gap: 15px; margin-top: 5px; }
         select, button { 
-            padding: 8px 12px; background: #222; color: #fff; 
+            padding: 6px 12px; background: #222; color: #fff; 
             border: 1px solid #00ffcc; border-radius: 5px; cursor: pointer; 
-            font-weight: bold;
         }
-
-        button:hover { background: #00ffcc; color: #000; }
 
         /* Contenedor de tableros */
         #multi-container { display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
 
         .board-instance { 
-            margin-bottom: 60px; 
+            margin-bottom: 50px; 
             padding: 20px;
             background: #252525;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             text-align: center; 
         }
 
-        /* Input para cambiar el nombre del rival */
         .rival-name-input {
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid #00ffcc;
-            color: #00ffcc;
-            font-size: 24px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 10px;
-            width: 300px;
-            outline: none;
-            text-transform: uppercase;
+            background: transparent; border: none; border-bottom: 2px solid #555;
+            color: #fff; font-size: 22px; text-align: center; margin-bottom: 15px;
+            width: 300px; outline: none; text-transform: uppercase;
         }
+        .rival-name-input:focus { border-bottom-color: #00ffcc; }
 
         .board-wrapper {
             position: relative;
@@ -57,10 +47,107 @@
             height: 543px;
             background-image: url('tablero.jpg'); 
             background-size: 100% 100%;
-            outline: 2px solid #444;
-            border-radius: 5px;
-            overflow: hidden;
+            outline: 3px solid #444;
         }
+
+        .cell {
+            position: absolute;
+            cursor: pointer;
+            border-radius: 12px;
+            width: 75px;
+            height: 75px; 
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .cell.off { background: rgba(0, 0, 0, 0.97); border: 2px solid #ff0000; }
+    </style>
+</head>
+<body>
+
+    <div class="bar">
+        <div class="secret-area">TU PERSONAJE: <span id="char-display" onclick="reveal()">¿? TOCAR PARA VER ¿?</span></div>
+        <div class="controls">
+            <span>RIVALES:</span>
+            <select id="rival-count" onchange="initGame()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <button onclick="initGame()">🎲 NUEVA PARTIDA</button>
+        </div>
+    </div>
+
+    <div id="multi-container"></div>
+
+    <script>
+        const names = ["Hugo", "Alejandro", "Alberto", "Manuel", "Andrea", "Carlos Manuel", "Carlos Morilla", "Lucas", "Sergio", "Cristian", "Ana Belén", "Nyx", "INFINITYCRAFT", "SrNugget", "Gaming Club Clips", "Skibidi Toilet", "Don Pollo", "Fideos", "Adivina el Animatrónico", "Emotes Diarios", "Portal Nether", "Desafios del Club", "Mes del Aprecio", "Squid Game", "TriatlonINT", "Level UP", "Cazón (GCS3)", "UwU (GCS3)", "Podrido (GCS3)", "Xiao (MegaDeath)", "Caballos Explosivos", "BOPL", "Gallina (UCH)", "Semibot", "Tripulante", "Bonnie", "Janet", "Piper", "Shelly", "Bea"];
+
+        const startX = 48;
+        const startY = 64;
+        const cellW = 75;
+        const cellH = 75;
+        const hGap = 13;
+        const rowPositionsY = [
+            startY,
+            startY + cellH + 39,
+            startY + (cellH + 39) * 2,
+            startY + (cellH + 39) * 2 + (cellH + 32)
+        ];
+
+        let secret = "";
+
+        function initGame() {
+            // Mezclar personaje único
+            secret = names[Math.floor(Math.random() * names.length)];
+            document.getElementById('char-display').innerText = "¡LISTO! (Toca)";
+
+            // Generar tableros
+            const container = document.getElementById('multi-container');
+            const count = document.getElementById('rival-count').value;
+            container.innerHTML = ""; 
+
+            for (let i = 1; i <= count; i++) {
+                createBoard(i);
+            }
+        }
+
+        function createBoard(index) {
+            const mainContainer = document.getElementById('multi-container');
+            const boardInstance = document.createElement('div');
+            boardInstance.className = 'board-instance';
+
+            boardInstance.innerHTML = `
+                <input type="text" class="rival-name-input" value="RIVAL ${index}">
+                <div class="board-wrapper" id="wrapper-${index}"></div>
+            `;
+
+            mainContainer.appendChild(boardInstance);
+            const wrapper = document.getElementById(`wrapper-${index}`);
+
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 10; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.style.left = (startX + (c * (cellW + hGap))) + "px";
+                    cell.style.top = rowPositionsY[r] + "px";
+                    cell.onclick = () => cell.classList.toggle('off');
+                    wrapper.appendChild(cell);
+                }
+            }
+        }
+
+        function reveal() {
+            if (secret) alert("Tu personaje secreto es: " + secret);
+            else alert("¡Dale a NUEVA PARTIDA!");
+        }
+
+        window.onload = initGame;
+    </script>
+</body>
+</html>        }
 
         .cell {
             position: absolute;
@@ -256,4 +343,5 @@
     </script>
 </body>
 </html>
+
 
