@@ -21,8 +21,8 @@
             position: absolute;
             cursor: pointer;
             border-radius: 12px;
-            width: 78px;
-            height: 76px; 
+            width: 77px;
+            height: 75px; 
             transition: 0.1s;
             z-index: 10;
         }
@@ -30,6 +30,7 @@
         .cell.off {
             background: rgba(0, 0, 0, 0.97);
             border: 2px solid #ff0000;
+            box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
         .secret-area { margin-bottom: 10px; font-size: 18px; color: #00ffcc; }
@@ -51,42 +52,23 @@
 
         const board = document.getElementById('board-container');
         
-        // --- CALIBRACIÓN FINAL ---
-        const startX = 45;    // Ajuste fino hacia la izquierda
-        const startY = 62;    // Ajuste fino hacia arriba
-        const colGap = 89.2;  // DISTANCIA ENTRE COLUMNAS (Ajustada para Bea)
-        const rowGap = 103.8; // DISTANCIA ENTRE FILAS (Ajustada para fila 4)
+        // --- CALIBRACIÓN HÍBRIDA ---
+        const startX = 48;    // Inicio horizontal Hugo
+        const startY = 64;    // Inicio vertical Hugo
+        const cellW = 77;     
+        const cellH = 75;     
+        
+        const colGap = 89.2;  // Gap Horizontal de "ahora" (Ajustado para Bea)
+        const vGap = 39;      // Gap Vertical de "antes" (Separación real entre filas)
 
         for (let r = 0; r < 4; r++) {
             for (let c = 0; c < 10; c++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 
-                // Aplicamos el gap acumulativo
+                // Aplicamos la lógica mixta
                 cell.style.left = (startX + (c * colGap)) + "px";
-                cell.style.top = (startY + (r * rowGap)) + "px";
-                
-                cell.onclick = () => cell.classList.toggle('off');
-                board.appendChild(cell);
-            }
-        }
-
-        let secret = "";
-        function mix() {
-            secret = names[Math.floor(Math.random() * names.length)];
-            document.getElementById('char-display').innerText = "¡LISTO! (Toca)";
-        }
-        function reveal() {
-            if (secret) alert("Tu personaje es: " + secret);
-            else alert("¡Dale a MEZCLAR!");
-        }
-        function clearBoard() {
-            document.querySelectorAll('.cell').forEach(c => c.classList.remove('off'));
-        }
-    </script>
-</body>
-</html>                cell.style.left = posX + "px";
-                cell.style.top = posY + "px";
+                cell.style.top = (startY + (r * (cellH + vGap))) + "px";
                 
                 cell.onclick = () => cell.classList.toggle('off');
                 board.appendChild(cell);
@@ -108,5 +90,3 @@
     </script>
 </body>
 </html>
-
-
