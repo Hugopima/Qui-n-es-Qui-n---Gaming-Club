@@ -44,8 +44,8 @@
 
         .board-wrapper { position: relative; width: 968px; height: 543px; background-size: 100% 100%; outline: 3px solid #444; border-radius: 8px; }
         
-        /* CELDAS ACTUALIZADAS: 77x76 */
-        .cell { position: absolute; cursor: pointer; border-radius: 12px; width: 77px; height: 76px; box-sizing: border-box; z-index: 10; }
+        /* CELDAS ACTUALIZADAS: 78x77 */
+        .cell { position: absolute; cursor: pointer; border-radius: 12px; width: 78px; height: 77px; box-sizing: border-box; z-index: 10; }
         .cell.off { background: rgba(0, 0, 0, 0.97); border: 2px solid #ff0000; box-shadow: inset 0 0 15px rgba(255,0,0,0.5); }
     </style>
 </head>
@@ -87,9 +87,9 @@
         let currentImage = "";
         let secret = "";
 
-        // --- LÓGICA DE COORDENADAS (AJUSTE -1px IZQUIERDA) ---
-        const startX = 47; // Era 48, bajamos 1 para expandir a la izquierda
-        const cellW = 76; // El salto base entre bordes izquierdos sigue igual
+        // --- LÓGICA DE COORDENADAS (AJUSTE -2px IZQUIERDA) ---
+        const startX = 45; // Bajamos 2 para expandir 2px a la izquierda
+        const cellW = 76; // El salto entre bordes sigue basado en 76
         
         const colPositionsX = [
             startX, 
@@ -112,7 +112,7 @@
                 currentImage = 'tablero.jpg';
             } else {
                 currentNames = names2;
-                currentImage = 'tablero2png';
+                currentImage = 'tablero2.png';
             }
             document.getElementById('launcher').style.display = 'none';
             document.getElementById('game-interface').style.display = 'flex';
