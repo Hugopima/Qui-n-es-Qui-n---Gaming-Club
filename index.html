@@ -23,20 +23,21 @@
         /* AJUSTE MILIMÉTRICO BASADO EN TU CAPTURA */
 .overlay {
     position: absolute;
-    /* Ajustamos el inicio para que no flote sobre el título */
-    top: 13.8%;    
-    left: 3.2%;      
-    width: 93.5%;    
-    height: 82%;   
+    /* Subimos el inicio para que encaje con la parte superior de los círculos */
+    top: 15.8%;    
+    left: 4.2%;      
+    width: 91.6%;    
+    
+    /* ALTURA CLAVE: 62% hace que el cuadro negro sea "chato" y no pise el texto */
+    height: 62%;   
 
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(4, 1fr);
     
-    /* ESPACIADO CLAVE */
-    column-gap: 1.2%; 
-    /* Aumentamos el hueco entre filas para que NO pise el texto de abajo */
-    row-gap: 9%;      
+    /* Espaciado para que los extremos (Hugo y Bea) coincidan con sus fotos */
+    column-gap: 1.8%; 
+    row-gap: 11%;      
 }
 
 .cell {
@@ -110,6 +111,7 @@
     </script>
 </body>
 </html>
+
 
 
 
