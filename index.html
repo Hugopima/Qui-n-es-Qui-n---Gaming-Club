@@ -12,7 +12,7 @@
             margin: 20px auto;
             width: 968px; 
             height: 543px;
-            background-image: url('tablero.jpg'); 
+            background-image: url('image_3eeb8b.jpg'); 
             background-size: 100% 100%;
             border: 4px solid #333;
         }
@@ -21,7 +21,6 @@
             position: absolute;
             cursor: pointer;
             border-radius: 12px;
-            /* Medidas exactas de tu captura de Paint */
             width: 77px;
             height: 75px; 
             transition: 0.1s;
@@ -31,7 +30,6 @@
         .cell.off {
             background: rgba(0, 0, 0, 0.97);
             border: 2px solid #ff0000;
-            box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
         .secret-area { margin-bottom: 10px; font-size: 18px; color: #00ffcc; }
@@ -53,24 +51,25 @@
 
         const board = document.getElementById('board-container');
         
-        // --- VALORES EXTRAÍDOS DE TUS FOTOS DE PAINT ---
-        const startX = 48;    // Posición inicial Hugo
-        const startY = 64;    // Posición inicial Hugo
-        
-        const cellW = 77;     // Ancho del cuadro
-        const cellH = 75;     // Alto del cuadro
-        
-        const hGap = 14;      // Espacio horizontal entre cuadros (tu foto image_4bf8e3)
-        const vGap = 39;      // Espacio vertical entre cuadros (tu foto image_4bf8bc)
+        // --- MEDIDAS DE PAINT RECALIBRADAS ---
+        const startX = 48;    
+        const startY = 64;    
+        const cellW = 77;     
+        const cellH = 75;     
+        const hGap = 14;      
+        const vGap = 39;      
 
         for (let r = 0; r < 4; r++) {
             for (let c = 0; c < 10; c++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 
-                // Cálculo: (Posición inicial) + (Índice * (Tamaño + Hueco))
-                cell.style.left = (startX + (c * (cellW + hGap))) + "px";
-                cell.style.top = (startY + (r * (cellH + vGap))) + "px";
+                // Cálculo ultra-preciso
+                let posX = startX + (c * (cellW + hGap));
+                let posY = startY + (r * (cellH + vGap));
+                
+                cell.style.left = posX + "px";
+                cell.style.top = posY + "px";
                 
                 cell.onclick = () => cell.classList.toggle('off');
                 board.appendChild(cell);
