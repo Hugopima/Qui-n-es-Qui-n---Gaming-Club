@@ -23,23 +23,36 @@
         /* AJUSTE MILIMÉTRICO BASADO EN TU CAPTURA */
 .overlay {
     position: absolute;
-    /* Subimos el inicio para que encaje con la parte superior de los círculos */
-    top: 15.8%;    
-    left: 4.2%;      
-    width: 91.6%;    
-    
-    /* ALTURA CLAVE: 62% hace que el cuadro negro sea "chato" y no pise el texto */
-    height: 62%;   
+    /* Ajustamos el inicio para que no flote sobre el título */
+    top: 13.8%;    
+    left: 3.2%;      
+    width: 93.5%;    
+    height: 82%;   
 
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(4, 1fr);
     
-    /* Espaciado para que los extremos (Hugo y Bea) coincidan con sus fotos */
-    column-gap: 1.8%; 
-    row-gap: 11%;      
+    /* ESPACIADO CLAVE */
+    column-gap: 1.2%; 
+    /* Aumentamos el hueco entre filas para que NO pise el texto de abajo */
+    row-gap: 9%;      
 }
 
+.cell {
+    cursor: pointer;
+    border-radius: 15px;
+    transition: 0.15s;
+    /* Obligamos a que el cuadro negro sea más corto para que se vea el nombre */
+    height: 75%; 
+    align-self: start; /* Lo pega a la parte superior de su hueco (la imagen) */
+}
+
+.cell.off {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #ff0000;
+    box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.5);
+}
         .cell {
             cursor: pointer;
             border-radius: 15px; /* Bordes redondeados como tus avatares */
@@ -97,6 +110,7 @@
     </script>
 </body>
 </html>
+
 
 
 
