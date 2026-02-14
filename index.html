@@ -1,117 +1,137 @@
+¡Entendido! Vamos a arreglar eso ahora mismo. El problema de que los cuadrados no cuadren suele ser por los márgenes de la imagen y cómo el navegador interpreta el espacio.
+
+He rediseñado el código para que sea "Modo Cine" (oscuro, moderno y con la imagen como protagonista) y he ajustado los porcentajes de la cuadrícula específicamente para la imagen que me pasaste.
+
+Aquí tienes el código "limpio" para copiar y reemplazar todo el contenido de tu index.html:
+
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quién es Quién - Gaming Club Edition</title>
+    <title>Gaming Club Edition - Quién es Quién</title>
     <style>
-        /* CONFIGURACIÓN VISUAL */
+        /* ESTILO MODERNO Y OSCURO */
         body { 
-            background-color: #add8e6; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-        }
-
-        .header {
-            background: #222;
+            background-color: #1a1a1a; 
             color: white;
-            width: 100%;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        .secret-box {
-            font-size: 24px;
+        .menu {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            border-bottom: 2px solid #333;
+            box-sizing: border-box;
+        }
+
+        .personaje-secreto {
+            font-size: 28px;
+            color: #00ffcc;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            margin-bottom: 15px;
             font-weight: bold;
-            color: #ffcc00;
-            margin-bottom: 10px;
         }
 
         button {
-            background: #444;
+            background: #333;
             color: white;
-            border: 2px solid #ffcc00;
-            padding: 10px 20px;
-            border-radius: 5px;
+            border: 1px solid #555;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
+            font-size: 16px;
+            transition: all 0.3s;
         }
 
-        button:hover { background: #ffcc00; color: black; }
+        button:hover {
+            background: #00ffcc;
+            color: black;
+            border-color: #fff;
+        }
 
-        /* EL TABLERO */
-        .game-container {
+        /* CONTENEDOR DE LA IMAGEN (AJUSTADO) */
+        .tablero-container {
             position: relative;
-            margin: 30px;
+            margin: 20px auto;
+            width: 95vw; /* Casi todo el ancho de la pantalla */
+            max-width: 1200px; /* Pero no infinito para que no se pixele */
             display: inline-block;
-            line-height: 0; /* Quita espacios extra bajo la imagen */
         }
 
         .tablero-img {
-            max-width: 95vw; /* Se ajusta al ancho de la pantalla */
+            width: 100%;
             height: auto;
-            border: 8px solid #333;
-            border-radius: 10px;
+            display: block;
+            border-radius: 4px;
         }
 
-        /* LA REJILLA INVISIBLE (EL TRUCO) */
-        .grid-overlay {
+        /* CUADRÍCULA DE CLICS (AJUSTADA A TU IMAGEN) */
+        .overlay {
             position: absolute;
-            /* Estos valores ajustan la rejilla sobre los personajes */
-            top: 11%; 
-            left: 2%; 
-            width: 96%; 
-            height: 86%;
+            /* Estos valores están ajustados para tu imagen específica */
+            top: 10%; 
+            left: 1.5%;
+            width: 97%;
+            height: 88%;
             
             display: grid;
-            grid-template-columns: repeat(10, 1fr); /* 10 columnas */
-            grid-template-rows: repeat(4, 1fr);    /* 4 filas */
-            gap: 4px; /* Espacio entre los clics */
+            grid-template-columns: repeat(10, 1fr); /* 10 personajes por fila */
+            grid-template-rows: repeat(4, 1fr);    /* 4 filas de personajes */
+            gap: 2px; /* Espacio mínimo para que encaje mejor */
         }
 
-        /* LAS "MARCAS" PARA TACHAR */
-        .slot {
+        /* EL EFECTO DE QUITAR */
+        .celda {
             cursor: pointer;
-            background: rgba(0,0,0,0); /* Invisible por defecto */
-            border-radius: 15px;
-            transition: background 0.3s, transform 0.1s;
+            background: rgba(0,0,0,0);
+            border-radius: 10px;
+            transition: 0.2s;
         }
 
-        .slot:active { transform: scale(0.95); }
-
-        /* Estilo cuando el personaje está "ELIMINADO" */
-        .slot.eliminated {
-            background: rgba(0, 0, 0, 0.85); /* Oscurece al personaje */
-            border: 2px solid red;
-            box-shadow: inset 0 0 20px rgba(255,0,0,0.5);
+        .celda.eliminado {
+            background: rgba(0, 0, 0, 0.9); /* Casi negro total */
+            border: 1px solid #ff4444;
+            transform: scale(0.92); /* Se encoge un poco para dar efecto de "hundido" */
         }
+
+        /* Ocultar el personaje para que sea sorpresa al pasar el ratón */
+        #nombre-personaje {
+            background: #444;
+            padding: 2px 10px;
+            border-radius: 4px;
+            cursor: help;
+        }
+        #nombre-personaje:hover { background: none; }
+
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="secret-box">Tu personaje: <span id="target">???</span></div>
-        <button onclick="pickRandom()">Mezclar Personaje</button>
-        <button onclick="resetBoard()">Limpiar Tablero</button>
+    <div class="menu">
+        <div class="personaje-secreto">
+            Tu Personaje: <span id="nombre-personaje" title="Pasa el ratón para ver">¿¿ ??</span>
+        </div>
+        <button onclick="nuevoPersonaje()">🎲 Mezclar</button>
+        <button onclick="reiniciarTablero()">🔄 Limpiar Tablero</button>
     </div>
 
-    <div class="game-container">
-        <img src="tablero.jpg" alt="Tablero Gaming Club" class="tablero-img">
-        
-        <div class="grid-overlay" id="grid"></div>
+    <div class="tablero-container">
+        <img src="tablero.jpg" class="tablero-img">
+        <div class="overlay" id="grid"></div>
     </div>
 
     <script>
-        // Lista de nombres sacada de tu imagen
-        const names = [
+        const personajes = [
             "Hugo", "Alejandro", "Alberto", "Manuel", "Andrea", "Carlos Manuel", "Carlos Morilla", "Lucas", "Sergio", "Cristian",
             "Ana Belén", "Nyx", "INFINITYCRAFT", "SrNugget", "Gaming Club Clips", "Skibidi Toilet", "Don Pollo", "Fideos", "Adivina el Animatrónico", "Emotes Diarios",
             "Portal Nether", "Desafíos del Club", "Mes del Aprecio", "Squid Game", "TriatlonINT", "Level UP", "Cazón (GCS3)", "UwU (GCS3)", "Podrido (GCS3)", "Xiao (MegaDeath)",
@@ -120,28 +140,24 @@
 
         const grid = document.getElementById('grid');
 
-        // Generar los 40 espacios interactivos
+        // Generamos los 40 cuadros para hacer clic
         for (let i = 0; i < 40; i++) {
-            const slot = document.createElement('div');
-            slot.className = 'slot';
-            // Al hacer clic, se pone o quita el color negro
-            slot.onclick = function() {
-                this.classList.toggle('eliminated');
+            const div = document.createElement('div');
+            div.className = 'celda';
+            div.onclick = function() {
+                this.classList.toggle('eliminado');
             };
-            grid.appendChild(slot);
+            grid.appendChild(div);
         }
 
-        // Elegir personaje al azar
-        function pickRandom() {
-            const randomName = names[Math.floor(Math.random() * names.length)];
-            document.getElementById('target').innerText = randomName;
+        function nuevoPersonaje() {
+            const random = personajes[Math.floor(Math.random() * personajes.length)];
+            document.getElementById('nombre-personaje').innerText = random;
         }
 
-        // Limpiar todas las marcas negras
-        function resetBoard() {
-            document.querySelectorAll('.slot').forEach(s => s.classList.remove('eliminated'));
+        function reiniciarTablero() {
+            document.querySelectorAll('.celda').forEach(c => c.classList.remove('eliminado'));
         }
     </script>
-
 </body>
 </html>
