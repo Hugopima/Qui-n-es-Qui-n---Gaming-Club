@@ -1,3 +1,4 @@
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,16 +9,21 @@
         body { background: #1a1a1a; color: white; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
         .bar { background: #000; width: 100%; padding: 15px; text-align: center; border-bottom: 2px solid #00ffcc; position: sticky; top: 0; z-index: 10; }
         
+        /* Ajustamos el tamaño para que sea más visible */
         .board-wrapper {
             position: relative;
             margin: 20px;
-            width: 1000px; 
-            height: 563px;
-            /* CAMBIA EL NOMBRE DE ABAJO SI TU IMAGEN SE LLAMA DISTINTO */
+            width: 90vw; 
+            max-width: 1000px;
+            aspect-ratio: 1000 / 563; /* Mantiene la forma de tu imagen */
+            
+            /* REEMPLAZA TU_IMAGEN.jpg POR EL NOMBRE DE TU ARCHIVO EN GITHUB */
             background-image: url('tablero.jpg'); 
+            
             background-size: 100% 100%;
+            background-repeat: no-repeat;
             border: 4px solid #333;
-            background-color: #333; /* Color de fondo por si la imagen falla */
+            background-color: #444; 
         }
 
         .overlay {
@@ -29,42 +35,42 @@
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             grid-template-rows: repeat(4, 1fr);
-            gap: 6px;
+            gap: 4px;
         }
 
         .cell {
             cursor: pointer;
-            border-radius: 12px;
+            border-radius: 8px;
             transition: 0.2s;
-            background: rgba(255, 255, 255, 0); /* Totalmente transparente */
+            background: rgba(255, 255, 255, 0); 
         }
 
         .cell.off {
             background: rgba(0, 0, 0, 0.9);
-            border: 2px solid #ff4444;
-            box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.6);
+            border: 1px solid #ff4444;
+            box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
-        .secret-area { margin-bottom: 10px; font-size: 22px; font-weight: bold; color: #00ffcc; }
-        #char-display { background: #333; padding: 0 10px; cursor: pointer; border-radius: 5px; }
-        button { padding: 10px 20px; cursor: pointer; background: #222; color: #fff; border: 1px solid #00ffcc; border-radius: 5px; margin: 0 5px; font-weight: bold; }
+        .secret-area { margin-bottom: 10px; font-size: 20px; font-weight: bold; color: #00ffcc; }
+        #char-display { background: #333; padding: 5px 15px; cursor: pointer; border-radius: 5px; min-width: 150px; display: inline-block; }
+        button { padding: 10px 15px; cursor: pointer; background: #222; color: #fff; border: 1px solid #00ffcc; border-radius: 5px; margin: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="bar">
-        <div class="secret-area">Eres: <span id="char-display" onclick="reveal()">¿? CLIC AQUÍ ¿?</span></div>
-        <button onclick="mix()">🎲 Mezclar</button>
-        <button onclick="clearBoard()">🔄 Limpiar Tablero</button>
+        <div class="secret-area">Tu Personaje: <span id="char-display" onclick="reveal()">¿? CLIC AQUÍ ¿?</span></div>
+        <button onclick="mix()">🎲 MEZCLAR</button>
+        <button onclick="clearBoard()">🔄 RESET</button>
     </div>
 
-    <div class="board-wrapper" id="tablero">
+    <div class="board-wrapper">
         <div class="overlay" id="grid"></div>
     </div>
 
     <script>
         const names = ["Hugo", "Alejandro", "Alberto", "Manuel", "Andrea", "Carlos Manuel", "Carlos Morilla", "Lucas", "Sergio", "Cristian", "Ana Belén", "Nyx", "INFINITYCRAFT", "SrNugget", "Gaming Club Clips", "Skibidi Toilet", "Don Pollo", "Fideos", "Adivina el Animatrónico", "Emotes Diarios", "Portal Nether", "Desafios del Club", "Mes del Aprecio", "Squid Game", "TriatlonINT", "Level UP", "Cazón (GCS3)", "UwU (GCS3)", "Podrido (GCS3)", "Xiao (MegaDeath)", "Caballos Explosivos", "BOPL", "Gallina (UCH)", "Semibot", "Tripulante", "Bonnie", "Janet", "Piper", "Shelly", "Bea"];
-        let currentSecret = "";
+        let secret = "";
 
         const grid = document.getElementById('grid');
         for (let i = 0; i < 40; i++) {
@@ -75,12 +81,19 @@
         }
 
         function mix() {
-            currentSecret = names[Math.floor(Math.random() * lista.length)];
-            document.getElementById('char-display').innerText = "VER PERSONAJE";
+            secret = names[Math.floor(Math.random() * names.length)];
+            document.getElementById('char-display').innerText = "¡OCULTO! (Toca)";
+            document.getElementById('char-display').style.color = "#888";
         }
 
         function reveal() {
-            if (currentSecret) alert("Tu personaje es: " + currentSecret);
+            if (secret) {
+                alert("Tu personaje es: " + secret);
+                document.getElementById('char-display').innerText = secret;
+                document.getElementById('char-display').style.color = "#00ffcc";
+            } else {
+                alert("¡Primero dale al botón de MEZCLAR!");
+            }
         }
 
         function clearBoard() {
@@ -89,4 +102,3 @@
     </script>
 </body>
 </html>
-
