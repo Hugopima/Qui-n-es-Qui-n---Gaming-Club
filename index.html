@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quién es Quién - Gaming Club Edition</title>
+    <style>
+        /* CONFIGURACIÓN VISUAL */
+        body { 
+            background-color: #add8e6; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+
+        .header {
+            background: #222;
+            color: white;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .secret-box {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffcc00;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background: #444;
+            color: white;
+            border: 2px solid #ffcc00;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover { background: #ffcc00; color: black; }
+
+        /* EL TABLERO */
+        .game-container {
+            position: relative;
+            margin: 30px;
+            display: inline-block;
+            line-height: 0; /* Quita espacios extra bajo la imagen */
+        }
+
+        .tablero-img {
+            max-width: 95vw; /* Se ajusta al ancho de la pantalla */
+            height: auto;
+            border: 8px solid #333;
+            border-radius: 10px;
+        }
+
+        /* LA REJILLA INVISIBLE (EL TRUCO) */
+        .grid-overlay {
+            position: absolute;
+            /* Estos valores ajustan la rejilla sobre los personajes */
+            top: 11%; 
+            left: 2%; 
+            width: 96%; 
+            height: 86%;
+            
+            display: grid;
+            grid-template-columns: repeat(10, 1fr); /* 10 columnas */
+            grid-template-rows: repeat(4, 1fr);    /* 4 filas */
+            gap: 4px; /* Espacio entre los clics */
+        }
+
+        /* LAS "MARCAS" PARA TACHAR */
+        .slot {
+            cursor: pointer;
+            background: rgba(0,0,0,0); /* Invisible por defecto */
+            border-radius: 15px;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        .slot:active { transform: scale(0.95); }
+
+        /* Estilo cuando el personaje está "ELIMINADO" */
+        .slot.eliminated {
+            background: rgba(0, 0, 0, 0.85); /* Oscurece al personaje */
+            border: 2px solid red;
+            box-shadow: inset 0 0 20px rgba(255,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="secret-box">Tu personaje: <span id="target">???</span></div>
+        <button onclick="pickRandom()">Mezclar Personaje</button>
+        <button onclick="resetBoard()">Limpiar Tablero</button>
+    </div>
+
+    <div class="game-container">
+        <img src="tablero.jpg" alt="Tablero Gaming Club" class="tablero-img">
+        
+        <div class="grid-overlay" id="grid"></div>
+    </div>
+
+    <script>
+        // Lista de nombres sacada de tu imagen
+        const names = [
+            "Hugo", "Alejandro", "Alberto", "Manuel", "Andrea", "Carlos Manuel", "Carlos Morilla", "Lucas", "Sergio", "Cristian",
+            "Ana Belén", "Nyx", "INFINITYCRAFT", "SrNugget", "Gaming Club Clips", "Skibidi Toilet", "Don Pollo", "Fideos", "Adivina el Animatrónico", "Emotes Diarios",
+            "Portal Nether", "Desafíos del Club", "Mes del Aprecio", "Squid Game", "TriatlonINT", "Level UP", "Cazón (GCS3)", "UwU (GCS3)", "Podrido (GCS3)", "Xiao (MegaDeath)",
+            "Caballos Explosivos", "BOPL", "Gallina (UCH)", "Semibot", "Tripulante", "Bonnie", "Janet", "Piper", "Shelly", "Bea"
+        ];
+
+        const grid = document.getElementById('grid');
+
+        // Generar los 40 espacios interactivos
+        for (let i = 0; i < 40; i++) {
+            const slot = document.createElement('div');
+            slot.className = 'slot';
+            // Al hacer clic, se pone o quita el color negro
+            slot.onclick = function() {
+                this.classList.toggle('eliminated');
+            };
+            grid.appendChild(slot);
+        }
+
+        // Elegir personaje al azar
+        function pickRandom() {
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            document.getElementById('target').innerText = randomName;
+        }
+
+        // Limpiar todas las marcas negras
+        function resetBoard() {
+            document.querySelectorAll('.slot').forEach(s => s.classList.remove('eliminated'));
+        }
+    </script>
+
+</body>
+</html>
