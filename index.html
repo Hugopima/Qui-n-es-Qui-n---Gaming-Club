@@ -2,153 +2,144 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Quién es Quién - Gaming Club Multitablero</title>
+    <title>¿Quién es Quién?: Edición Gaming Club</title>
     <style>
-        body { background: #1a1a1a; color: white; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
+        body { background: #1a1a1a; color: white; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
         
-        /* Barra fija con TU personaje */
+        /* --- PANTALLA DE INICIO --- */
+        #launcher {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #252525 0%, #000 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+        #launcher h1 { color: #00ffcc; font-size: 42px; text-align: center; text-shadow: 0 0 15px rgba(0,255,204,0.4); margin-bottom: 50px; }
+        .menu-options { display: flex; gap: 40px; }
+        .btn-game {
+            width: 220px; padding: 30px; background: #333; border: 3px solid #00ffcc;
+            border-radius: 20px; cursor: pointer; transition: 0.3s; text-align: center;
+        }
+        .btn-game:hover { background: #00ffcc; color: #000; transform: translateY(-10px); }
+        .btn-game span { display: block; font-size: 22px; font-weight: bold; margin-top: 15px; }
+
+        /* --- INTERFAZ DEL JUEGO --- */
+        #game-interface { display: none; width: 100%; flex-direction: column; align-items: center; }
+
         .bar { 
             background: #000; width: 100%; padding: 15px; text-align: center; 
             border-bottom: 2px solid #00ffcc; position: sticky; top: 0; z-index: 100;
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.7);
         }
-
         .secret-area { font-size: 20px; font-weight: bold; color: #00ffcc; }
         #char-display { background: #333; padding: 5px 15px; cursor: pointer; border-radius: 5px; border: 1px dashed #00ffcc; }
-
+        
         .controls { display: flex; align-items: center; gap: 15px; margin-top: 5px; }
-        select, button { 
-            padding: 6px 12px; background: #222; color: #fff; 
-            border: 1px solid #00ffcc; border-radius: 5px; cursor: pointer; 
-        }
+        select, button { padding: 8px 15px; background: #222; color: #fff; border: 1px solid #00ffcc; border-radius: 5px; cursor: pointer; font-weight: bold; }
 
-        /* Contenedor de tableros */
-        #multi-container { display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
-
-        .board-instance { 
-            margin-bottom: 50px; 
-            padding: 20px;
-            background: #252525;
-            border-radius: 15px;
-            text-align: center; 
-        }
-
-        .rival-name-input {
-            background: transparent; border: none; border-bottom: 2px solid #555;
-            color: #fff; font-size: 22px; text-align: center; margin-bottom: 15px;
-            width: 300px; outline: none; text-transform: uppercase;
-        }
+        #multi-container { display: flex; flex-direction: column; align-items: center; padding: 30px 0; }
+        .board-instance { margin-bottom: 60px; padding: 25px; background: #252525; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .rival-name-input { background: transparent; border: none; border-bottom: 2px solid #555; color: #fff; font-size: 24px; text-align: center; margin-bottom: 20px; width: 350px; outline: none; text-transform: uppercase; }
         .rival-name-input:focus { border-bottom-color: #00ffcc; }
 
-        .board-wrapper {
-            position: relative;
-            width: 968px; 
-            height: 543px;
-            background-image: url('tablero.jpg'); 
-            background-size: 100% 100%;
-            outline: 3px solid #444;
-        }
-
-        /* ESTE ES EL CÓDIGO QUE SE TE SALÍA FUERA */
-        .cell {
-            position: absolute;
-            cursor: pointer;
-            border-radius: 12px;
-            width: 75px;
-            height: 75px; 
-            box-sizing: border-box;
-            z-index: 10;
-        }
-
-        .cell.off { 
-            background: rgba(0, 0, 0, 0.97); 
-            border: 2px solid #ff0000; 
-            box-shadow: inset 0 0 15px rgba(255,0,0,0.4);
-        }
+        .board-wrapper { position: relative; width: 968px; height: 543px; background-size: 100% 100%; outline: 3px solid #444; border-radius: 8px; }
+        
+        .cell { position: absolute; cursor: pointer; border-radius: 12px; width: 75px; height: 75px; box-sizing: border-box; z-index: 10; }
+        .cell.off { background: rgba(0, 0, 0, 0.97); border: 2px solid #ff0000; box-shadow: inset 0 0 15px rgba(255,0,0,0.5); }
     </style>
 </head>
 <body>
 
-    <div class="bar">
-        <div class="secret-area">TU PERSONAJE: <span id="char-display" onclick="reveal()">¿? TOCAR PARA VER ¿?</span></div>
-        <div class="controls">
-            <span>RIVALES:</span>
-            <select id="rival-count" onchange="initGame()">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-            <button onclick="initGame()">🎲 NUEVA PARTIDA</button>
+    <div id="launcher">
+        <h1>¿Quién es Quién?<br><span style="font-size: 24px; color: white;">Edición Gaming Club</span></h1>
+        <div class="menu-options">
+            <div class="btn-game" onclick="startGame(1)">
+                🎮 <span>TABLERO 1</span>
+            </div>
+            <div class="btn-game" onclick="startGame(2)">
+                🔥 <span>TABLERO 2</span>
+            </div>
         </div>
     </div>
 
-    <div id="multi-container"></div>
+    <div id="game-interface">
+        <div class="bar">
+            <div class="secret-area">TU PERSONAJE: <span id="char-display" onclick="reveal()">¿? TOCAR PARA VER ¿?</span></div>
+            <div class="controls">
+                <button onclick="location.reload()" style="border-color: #ff4444; color: #ff4444;">⬅ MENÚ</button>
+                <span>RIVALES:</span>
+                <select id="rival-count" onchange="initGame()">
+                    <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                </select>
+                <button onclick="initGame()">🎲 NUEVA PARTIDA</button>
+            </div>
+        </div>
+        <div id="multi-container"></div>
+    </div>
 
     <script>
-        const names = ["Hugo", "Alejandro", "Alberto", "Manuel", "Andrea", "Carlos Manuel", "Carlos Morilla", "Lucas", "Sergio", "Cristian", "Ana Belén", "Nyx", "INFINITYCRAFT", "SrNugget", "Gaming Club Clips", "Skibidi Toilet", "Don Pollo", "Fideos", "Adivina el Animatrónico", "Emotes Diarios", "Portal Nether", "Desafios del Club", "Mes del Aprecio", "Squid Game", "TriatlonINT", "Level UP", "Cazón (GCS3)", "UwU (GCS3)", "Podrido (GCS3)", "Xiao (MegaDeath)", "Caballos Explosivos", "BOPL", "Gallina (UCH)", "Semibot", "Tripulante", "Bonnie", "Janet", "Piper", "Shelly", "Bea"];
+        const names1 = ["Hugo", "Alejandro", "Alberto", "Manuel", "Andrea", "Carlos Manuel", "Carlos Morilla", "Lucas", "Sergio", "Cristian", "Ana Belén", "Nyx", "INFINITYCRAFT", "SrNugget", "Gaming Club Clips", "Skibidi Toilet", "Don Pollo", "Fideos", "Adivina el Animatrónico", "Emotes Diarios", "Portal Nether", "Desafios del Club", "Mes del Aprecio", "Squid Game", "TriatlonINT", "Level UP", "Cazón (GCS3)", "UwU (GCS3)", "Podrido (GCS3)", "Xiao (MegaDeath)", "Caballos Explosivos", "BOPL", "Gallina (UCH)", "Semibot", "Tripulante", "Bonnie", "Janet", "Piper", "Shelly", "Bea"];
+        
+        const names2 = ["Arturo", "Brandon", "Óscar", "Piruzero", "David", "Agustín", "Anna", "Ángel", "Víctor Hugo", "Francisco Nolasco", "Vicente", "Jeral", "Skibidi Toilet Fav", "Hasnan", "Modric Shaolin", "Remedios y sus recetas", "Alexgamer", "Trabajoman", "Tung Tung Sahur", "67", "Discuss Time", "MegaDeath", "GC TCG", "Club de la Comedia", "Sergifroki YT", "Calcetín", "Montañista", "Hat Kid", "Girasol", "Toñi", "Peppa Pig", "Araña malvada", "Sans", "Kel", "Wendy y Abigail", "Empleado", "Sprout", "León", "Rosa", "Gus"];
+
+        let currentNames = [];
+        let currentImage = "";
+        let secret = "";
 
         const startX = 48;
         const startY = 64;
         const cellW = 75;
         const cellH = 75;
         const hGap = 13;
-        const rowPositionsY = [
-            startY,
-            startY + cellH + 39,
-            startY + (cellH + 39) * 2,
-            startY + (cellH + 39) * 2 + (cellH + 32)
-        ];
+        const rowPositionsY = [64, 178, 292, 399]; // 399 es el ajuste de la fila 4 (32px de gap)
 
-        let secret = "";
+        function startGame(mode) {
+            if(mode === 1) {
+                currentNames = names1;
+                currentImage = 'tablero.jpg';
+            } else {
+                currentNames = names2;
+                currentImage = 'tablero2.png';
+            }
+            document.getElementById('launcher').style.display = 'none';
+            document.getElementById('game-interface').style.display = 'flex';
+            initGame();
+        }
 
         function initGame() {
-            secret = names[Math.floor(Math.random() * names.length)];
+            secret = currentNames[Math.floor(Math.random() * currentNames.length)];
             document.getElementById('char-display').innerText = "¡LISTO! (Toca)";
-
+            
             const container = document.getElementById('multi-container');
             const count = document.getElementById('rival-count').value;
             container.innerHTML = ""; 
 
             for (let i = 1; i <= count; i++) {
-                createBoard(i);
-            }
-        }
-
-        function createBoard(index) {
-            const mainContainer = document.getElementById('multi-container');
-            const boardInstance = document.createElement('div');
-            boardInstance.className = 'board-instance';
-
-            boardInstance.innerHTML = `
-                <input type="text" class="rival-name-input" value="RIVAL ${index}">
-                <div class="board-wrapper" id="wrapper-${index}"></div>
-            `;
-
-            mainContainer.appendChild(boardInstance);
-            const wrapper = document.getElementById(`wrapper-${index}`);
-
-            for (let r = 0; r < 4; r++) {
-                for (let c = 0; c < 10; c++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'cell';
-                    cell.style.left = (startX + (c * (cellW + hGap))) + "px";
-                    cell.style.top = rowPositionsY[r] + "px";
-                    cell.onclick = () => cell.classList.toggle('off');
-                    wrapper.appendChild(cell);
+                const boardInstance = document.createElement('div');
+                boardInstance.className = 'board-instance';
+                boardInstance.innerHTML = `
+                    <input type="text" class="rival-name-input" value="RIVAL ${i}">
+                    <div class="board-wrapper" style="background-image: url('${currentImage}')" id="wrapper-${i}"></div>
+                `;
+                container.appendChild(boardInstance);
+                
+                const wrapper = document.getElementById(`wrapper-${i}`);
+                for (let r = 0; r < 4; r++) {
+                    for (let c = 0; c < 10; c++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        cell.style.left = (startX + (c * (cellW + hGap))) + "px";
+                        cell.style.top = rowPositionsY[r] + "px";
+                        cell.onclick = () => cell.classList.toggle('off');
+                        wrapper.appendChild(cell);
+                    }
                 }
             }
         }
 
         function reveal() {
             if (secret) alert("Tu personaje secreto es: " + secret);
-            else alert("¡Dale a NUEVA PARTIDA!");
         }
-
-        window.onload = initGame;
     </script>
 </body>
 </html>
-
