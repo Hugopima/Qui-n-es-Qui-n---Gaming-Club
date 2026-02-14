@@ -8,47 +8,43 @@
         body { background: #1a1a1a; color: white; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
         .bar { background: #000; width: 100%; padding: 15px; text-align: center; border-bottom: 2px solid #00ffcc; position: sticky; top: 0; z-index: 10; }
         
-        .board-wrapper {
-            position: relative;
-            margin: 20px auto;
-            width: 95vw; 
-            max-width: 1000px;
-            aspect-ratio: 1000 / 563;
-            background-image: url('tablero.jpg'); 
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            border: 4px solid #333;
-        }
+.board-wrapper {
+    position: relative;
+    margin: 20px auto;
+    /* Forzamos el tamaño real de tu imagen para que las coordenadas coincidan */
+    width: 1280px; 
+    height: 720px;
+    background-image: url('image_3eeb8b.jpg'); 
+    background-size: 100% 100%;
+    border: 4px solid #333;
+}
 
-   .overlay {
+.overlay {
     position: absolute;
-    /* Subimos un pelín para clavar el 204 de Hugo */
-    top: 17.6%;    
-    /* Movemos a la derecha para centrar el 233 de Hugo */
-    left: 4.8%;      
-    /* Ampliamos el ancho total para que Bea llegue a 1057 */
-    width: 93.5%;    
-    height: 72%;   
+    /* Hugo empieza en 233, 204 */
+    top: 204px;    
+    left: 233px;      
+    /* El ancho total desde el inicio de Hugo (233) hasta el final de Bea (1133) */
+    width: 900px;    
+    /* El alto total desde el inicio de Hugo (204) hasta el final de Bea (626) */
+    height: 422px;   
 
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(4, 1fr);
     
-    /* Aumentamos el hueco horizontal para compensar el desvío de Bea */
-    column-gap: 2.2%; 
-    row-gap: 8.5%;      
+    /* Espaciado interno para que cada cuadro mida ~77px */
+    column-gap: 14px; 
+    row-gap: 35px;      
 }
 
 .cell {
     cursor: pointer;
-    border-radius: 12px;
-    transition: 0.1s;
-    /* Ajustamos el tamaño interno de la celda */
-    height: 72%; 
-    width: 100%; /* Ocupamos todo el ancho de la columna */
-    align-self: start;
+    border-radius: 10px;
+    /* Altura fija para que no tape el texto */
+    height: 75px; 
+    width: 77px;
 }
-
 .cell.off {
     background: rgba(0, 0, 0, 0.92);
     border: 2px solid #ff0000;
