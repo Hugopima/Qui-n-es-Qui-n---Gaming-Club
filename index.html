@@ -21,8 +21,8 @@
             position: absolute;
             cursor: pointer;
             border-radius: 12px;
-            width: 77px;
-            height: 75px; 
+            width: 78px;
+            height: 76px; 
             transition: 0.1s;
             z-index: 10;
         }
@@ -51,24 +51,41 @@
 
         const board = document.getElementById('board-container');
         
-        // --- MEDIDAS DE PAINT RECALIBRADAS ---
-        const startX = 48;    
-        const startY = 64;    
-        const cellW = 77;     
-        const cellH = 75;     
-        const hGap = 14;      
-        const vGap = 39;      
+        // --- CALIBRACIÓN FINAL ---
+        const startX = 45;    // Ajuste fino hacia la izquierda
+        const startY = 62;    // Ajuste fino hacia arriba
+        const colGap = 89.2;  // DISTANCIA ENTRE COLUMNAS (Ajustada para Bea)
+        const rowGap = 103.8; // DISTANCIA ENTRE FILAS (Ajustada para fila 4)
 
         for (let r = 0; r < 4; r++) {
             for (let c = 0; c < 10; c++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 
-                // Cálculo ultra-preciso
-                let posX = startX + (c * (cellW + hGap));
-                let posY = startY + (r * (cellH + vGap));
+                // Aplicamos el gap acumulativo
+                cell.style.left = (startX + (c * colGap)) + "px";
+                cell.style.top = (startY + (r * rowGap)) + "px";
                 
-                cell.style.left = posX + "px";
+                cell.onclick = () => cell.classList.toggle('off');
+                board.appendChild(cell);
+            }
+        }
+
+        let secret = "";
+        function mix() {
+            secret = names[Math.floor(Math.random() * names.length)];
+            document.getElementById('char-display').innerText = "¡LISTO! (Toca)";
+        }
+        function reveal() {
+            if (secret) alert("Tu personaje es: " + secret);
+            else alert("¡Dale a MEZCLAR!");
+        }
+        function clearBoard() {
+            document.querySelectorAll('.cell').forEach(c => c.classList.remove('off'));
+        }
+    </script>
+</body>
+</html>                cell.style.left = posX + "px";
                 cell.style.top = posY + "px";
                 
                 cell.onclick = () => cell.classList.toggle('off');
@@ -91,4 +108,5 @@
     </script>
 </body>
 </html>
+
 
