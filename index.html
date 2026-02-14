@@ -10,28 +10,29 @@
         .board-wrapper {
             position: relative;
             margin: 20px auto;
+            /* Medidas exactas de tu Paint */
             width: 968px; 
             height: 543px;
             background-image: url('tablero.jpg'); 
-            background-size: 100% 100%;
-            border: 4px solid #333;
+            background-size: 968px 543px; /* Forzado a píxeles, no a porcentaje */
+            background-repeat: no-repeat;
+            /* Eliminamos bordes que puedan desplazar la imagen interna */
+            outline: 4px solid #333; 
         }
 
         .cell {
             position: absolute;
             cursor: pointer;
             border-radius: 12px;
-            /* Medida real de tu selección en Paint */
             width: 77px;
             height: 75px; 
-            transition: 0.1s;
+            box-sizing: border-box; /* Para que el borde no sume tamaño */
             z-index: 10;
         }
 
         .cell.off {
             background: rgba(0, 0, 0, 0.97);
             border: 2px solid #ff0000;
-            box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
         .secret-area { margin-bottom: 10px; font-size: 18px; color: #00ffcc; }
@@ -53,25 +54,25 @@
 
         const board = document.getElementById('board-container');
         
-        // --- COORDENADAS REVISADAS ---
+        // --- COORDENADAS REGLA DE PAINT ---
         const startX = 48;    
         const startY = 64;    
         const cellW = 77;     
         const cellH = 75;     
         
-        const hGap = 89.2;    // El de "ahora": distancia entre inicios de columnas
-        const vGap = 39;      // El de "antes": hueco libre entre celdas verticales
+        // Gap Horizontal: Distancia de borde a borde (89.2)
+        // Gap Vertical: Espacio en blanco entre filas (39)
+        const hGap = 89.2;    
+        const vGap = 39;      
 
         for (let r = 0; r < 4; r++) {
             for (let c = 0; c < 10; c++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 
-                // LÓGICA MIXTA:
-                // Horizontal: Usa el gap de centro a centro (89.2)
-                // Vertical: Usa el tamaño de la celda + el hueco libre (75 + 39)
-                cell.style.left = (startX + (c * hGap)) + "px";
-                cell.style.top = (startY + (r * (cellH + vGap))) + "px";
+                // Cálculo de posición
+                cell.style.left = Math.round(startX + (c * hGap)) + "px";
+                cell.style.top = Math.round(startY + (r * (cellH + vGap))) + "px";
                 
                 cell.onclick = () => cell.classList.toggle('off');
                 board.appendChild(cell);
