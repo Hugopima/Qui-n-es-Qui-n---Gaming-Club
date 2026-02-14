@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -9,24 +8,24 @@
         body { background: #1a1a1a; color: white; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
         .bar { background: #000; width: 100%; padding: 15px; text-align: center; border-bottom: 2px solid #00ffcc; position: sticky; top: 0; z-index: 10; }
         
-        /* Contenedor principal con el tamaño exacto de tu imagen para que no falle */
         .board-wrapper {
             position: relative;
             margin: 20px;
-            width: 1000px; /* Tamaño base para el cálculo */
+            width: 1000px; 
             height: 563px;
-            background: url('image_3eeb8b.jpg') no-repeat center center;
-            background-size: contain;
+            /* CAMBIA EL NOMBRE DE ABAJO SI TU IMAGEN SE LLAMA DISTINTO */
+            background-image: url('image_3eeb8b.jpg'); 
+            background-size: 100% 100%;
             border: 4px solid #333;
+            background-color: #333; /* Color de fondo por si la imagen falla */
         }
 
-        /* REJILLA AJUSTADA: Estos % son los que hacen que cuadre */
         .overlay {
             position: absolute;
-            top: 11.8%;    /* Ajuste vertical */
-            left: 2.3%;    /* Ajuste horizontal */
-            width: 95.4%;  /* Ancho de la zona de caras */
-            height: 83.5%; /* Alto de la zona de caras */
+            top: 11.8%;    
+            left: 2.3%;    
+            width: 95.4%;  
+            height: 83.5%; 
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             grid-template-rows: repeat(4, 1fr);
@@ -37,10 +36,9 @@
             cursor: pointer;
             border-radius: 12px;
             transition: 0.2s;
-            /* Pon 'border: 1px solid green;' aquí si quieres ver los cuadros para probar */
+            background: rgba(255, 255, 255, 0); /* Totalmente transparente */
         }
 
-        /* Efecto de personaje eliminado */
         .cell.off {
             background: rgba(0, 0, 0, 0.9);
             border: 2px solid #ff4444;
@@ -50,18 +48,17 @@
         .secret-area { margin-bottom: 10px; font-size: 22px; font-weight: bold; color: #00ffcc; }
         #char-display { background: #333; padding: 0 10px; cursor: pointer; border-radius: 5px; }
         button { padding: 10px 20px; cursor: pointer; background: #222; color: #fff; border: 1px solid #00ffcc; border-radius: 5px; margin: 0 5px; font-weight: bold; }
-        button:hover { background: #00ffcc; color: #000; }
     </style>
 </head>
 <body>
 
     <div class="bar">
         <div class="secret-area">Eres: <span id="char-display" onclick="reveal()">¿? CLIC AQUÍ ¿?</span></div>
-        <button onclick="mix()">🎲 Nuevo Personaje</button>
+        <button onclick="mix()">🎲 Mezclar</button>
         <button onclick="clearBoard()">🔄 Limpiar Tablero</button>
     </div>
 
-    <div class="board-wrapper">
+    <div class="board-wrapper" id="tablero">
         <div class="overlay" id="grid"></div>
     </div>
 
@@ -78,20 +75,12 @@
         }
 
         function mix() {
-            currentSecret = names[Math.floor(Math.random() * names.length)];
-            const display = document.getElementById('char-display');
-            display.innerText = "VER PERSONAJE";
-            display.style.color = "#888";
+            currentSecret = names[Math.floor(Math.random() * lista.length)];
+            document.getElementById('char-display').innerText = "VER PERSONAJE";
         }
 
         function reveal() {
-            if (currentSecret) {
-                alert("Tu personaje secreto es: " + currentSecret);
-                document.getElementById('char-display').innerText = currentSecret;
-                document.getElementById('char-display').style.color = "#00ffcc";
-            } else {
-                alert("Primero dale a Mezclar");
-            }
+            if (currentSecret) alert("Tu personaje es: " + currentSecret);
         }
 
         function clearBoard() {
