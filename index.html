@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quién es Quién - Gaming Club</title>
     <style>
         body { 
@@ -29,52 +29,50 @@
         .board-wrapper {
             position: relative;
             margin: 20px auto;
-            /* Basado en la escala de tus coordenadas */
-            width: 1280px; 
-            height: 720px;
-            background-image: url('tablero.jpg'); 
+            width: 95vw; 
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            background-image: url('image_3eeb8b.jpg'); 
             background-size: 100% 100%;
             border: 4px solid #333;
         }
 
         .overlay {
             position: absolute;
-            /* Hugo empieza en 107 (X) y 213 (Y) */
-            top: 213px;    
-            left: 107px;      
+            /* Ajustado según tus coordenadas del inspeccionador */
+            top: 15.2%;    
+            left: 4.5%;    
+            width: 91%;  
+            height: 80%;   
             
-            /* Calculamos el área total: (99px cuadro + 17px gap) * 10 columnas */
-            width: 1150px;    
-            height: 550px;   
-
             display: grid;
-            grid-template-columns: repeat(10, 99px);
-            grid-template-rows: repeat(4, 98px);
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(4, 1fr);
             
-            /* Gaps exactos según tus medidas */
-            column-gap: 17px; 
-            row-gap: 51px;      
+            column-gap: 1.6%; 
+            row-gap: 7%;      
         }
 
         .cell {
             cursor: pointer;
-            border-radius: 15px;
-            /* Altura reducida para dejar el nombre libre */
-            height: 72px; 
-            width: 99px;
-            transition: 0.2s;
+            border-radius: 12px;
+            /* El cuadro negro ahora es más corto para no tapar el texto */
+            height: 68%; 
+            width: 90%;
+            justify-self: center;
             align-self: start;
+            transition: 0.2s;
         }
 
         .cell.off {
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.94);
             border: 2px solid #ff0000;
-            box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.5);
+            box-shadow: inset 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
-        .secret-area { margin-bottom: 10px; font-size: 20px; font-weight: bold; color: #00ffcc; }
+        .secret-area { margin-bottom: 10px; font-size: 18px; color: #00ffcc; }
         #char-display { background: #333; padding: 5px 15px; cursor: pointer; border-radius: 5px; }
-        button { padding: 10px 15px; cursor: pointer; background: #222; color: #fff; border: 1px solid #00ffcc; border-radius: 5px; margin: 0 5px; }
+        button { padding: 8px 15px; cursor: pointer; background: #222; color: #fff; border: 1px solid #00ffcc; border-radius: 5px; margin: 0 5px; }
     </style>
 </head>
 <body>
@@ -115,4 +113,3 @@
     </script>
 </body>
 </html>
-
