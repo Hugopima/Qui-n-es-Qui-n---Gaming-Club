@@ -21,7 +21,7 @@
             position: absolute;
             cursor: pointer;
             border-radius: 12px;
-            width: 76px; /* Tu medida exacta */
+            width: 76px;
             height: 75px; 
             box-sizing: border-box;
             z-index: 10;
@@ -51,32 +51,25 @@
 
         const board = document.getElementById('board-container');
         
-        // --- MEDIDAS MANUALES POR FILA ---
         const startX = 48;
         const startY = 64;
         const cellW = 76;
-        const cellH = 75; // Altura para cubrir la cara
-        const hGap = 13;
+        const cellH = 75;
+        const hGap = 12; // DISMINUIDO 1 PÍXEL AQUÍ
         
-        // Calculamos las alturas Y una a una para que la 4ª sea distinta
         const rowPositionsY = [
-            startY,                          // Fila 1: 64
-            startY + cellH + 39,             // Fila 2: 178
-            startY + (cellH + 39) * 2,       // Fila 3: 292
-            startY + (cellH + 39) * 2 + (cellH + 32) // Fila 4: 292 + 75 + 32 = 399
+            startY,
+            startY + cellH + 39,
+            startY + (cellH + 39) * 2,
+            startY + (cellH + 39) * 2 + (cellH + 32)
         ];
 
         for (let r = 0; r < 4; r++) {
             for (let c = 0; c < 10; c++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
-                
-                // Horizontal: constante (Ancho + 13)
                 cell.style.left = (startX + (c * (cellW + hGap))) + "px";
-                
-                // Vertical: según nuestro array de alturas
                 cell.style.top = rowPositionsY[r] + "px";
-                
                 cell.onclick = () => cell.classList.toggle('off');
                 board.appendChild(cell);
             }
