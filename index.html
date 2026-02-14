@@ -63,40 +63,27 @@
         const names = ["Hugo", "Alejandro", "Alberto", "Manuel", "Andrea", "Carlos Manuel", "Carlos Morilla", "Lucas", "Sergio", "Cristian", "Ana Belén", "Nyx", "INFINITYCRAFT", "SrNugget", "Gaming Club Clips", "Skibidi Toilet", "Don Pollo", "Fideos", "Adivina el Animatrónico", "Emotes Diarios", "Portal Nether", "Desafios del Club", "Mes del Aprecio", "Squid Game", "TriatlonINT", "Level UP", "Cazón (GCS3)", "UwU (GCS3)", "Podrido (GCS3)", "Xiao (MegaDeath)", "Caballos Explosivos", "BOPL", "Gallina (UCH)", "Semibot", "Tripulante", "Bonnie", "Janet", "Piper", "Shelly", "Bea"];
 
         // ============================================
-        // PARÁMETROS AJUSTABLES (modifica estos valores)
+        // PARÁMETROS CALCULADOS (basados en tus medidas)
         // ============================================
-        const imgWidth = 968;   // ancho de la imagen original (píxeles)
-        const imgHeight = 543;  // alto de la imagen original
-
-        // Primera foto (Hugo)
-        const firstX = 122;      // coordenada X izquierda
-        const firstY = 134;      // coordenada Y superior
-        const fotoWidth = 74.5;  // ancho promedio de las fotos (ajusta si es necesario)
-        const fotoHeight = 73.5; // alto promedio
-
-        // Gaps calculados (puedes afinarlos manualmente)
-        let gapX = 14.6667;      // separación horizontal entre fotos (píxeles)
-        let gapY = 39;           // separación vertical
-
-        // Factor de escala opcional para agrandar/reducir los recuadros (1 = tamaño exacto)
-        const scale = 1.0;       // si quieres que cubran más, prueba 1.05 (5% más grande)
+        const leftFirst = 5.05;   // % izquierda de Hugo
+        const topFirst = 11.01;   // % superior de Hugo
+        const fotoWidth = 7.1;    // % ancho de la foto (promedio)
+        const fotoHeight = 13.5;  // % alto de la foto
+        const gapX = 1.8;         // % separación horizontal (ajustable)
+        const gapY = 7.5;         // % separación vertical (ajustable)
         // ============================================
 
-        // Generar posiciones para 10 columnas y 4 filas
         const positions = [];
         for (let r = 0; r < 4; r++) {
             for (let c = 0; c < 10; c++) {
-                // Centro de la foto (opcional, si usas escala)
-                const leftPx = firstX + c * (fotoWidth + gapX) - (fotoWidth * (scale - 1) / 2);
-                const topPx = firstY + r * (fotoHeight + gapY) - (fotoHeight * (scale - 1) / 2);
-                const widthPx = fotoWidth * scale;
-                const heightPx = fotoHeight * scale;
-
-                const left = (leftPx / imgWidth * 100).toFixed(3) + '%';
-                const top = (topPx / imgHeight * 100).toFixed(3) + '%';
-                const width = (widthPx / imgWidth * 100).toFixed(3) + '%';
-                const height = (heightPx / imgHeight * 100).toFixed(3) + '%';
-                positions.push({ left, top, width, height });
+                const left = leftFirst + c * (fotoWidth + gapX) + '%';
+                const top = topFirst + r * (fotoHeight + gapY) + '%';
+                positions.push({ 
+                    left: left, 
+                    top: top, 
+                    width: fotoWidth + '%', 
+                    height: fotoHeight + '%' 
+                });
             }
         }
 
