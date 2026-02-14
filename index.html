@@ -23,27 +23,19 @@
         /* AJUSTE MILIMÉTRICO BASADO EN TU CAPTURA */
 .overlay {
     position: absolute;
-    /* 1. BAJAR EL INICIO: Para no tapar los nombres de la fila de arriba */
-    top: 14.5%;    
-    
-    /* 2. CENTRAR: Un margen pequeño a la izquierda */
-    left: 3.5%;    
-    
-    /* 3. ANCHO TOTAL: Para que llegue bien al último personaje (Bea) */
-    width: 93.5%;  
-    
-    /* 4. ALTURA DE LOS CUADROS: Menos porcentaje significa cuadros más bajitos */
-    height: 77%;   
+    /* Subimos un poco el inicio y reducimos altura para no tapar los nombres */
+    top: 15.5%;    
+    left: 4%;      
+    width: 92%;    
+    height: 68%;   /* Al ser 68%, el cuadro negro termina antes de llegar al texto */
 
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(4, 1fr);
     
-    /* 5. ESPACIADO ENTRE COLUMNAS: Ajusta el hueco entre caras horizontalmente */
-    column-gap: 1.2%; 
-    
-    /* 6. ESPACIADO ENTRE FILAS: Ajusta el hueco vertical */
-    row-gap: 4.5%;   
+    /* Espaciado ajustado para que los extremos (Hugo y Bea) no se desplacen */
+    column-gap: 1.5%; 
+    row-gap: 7%;      
 }
 
         .cell {
@@ -103,4 +95,5 @@
     </script>
 </body>
 </html>
+
 
