@@ -21,18 +21,30 @@
         }
 
         /* AJUSTE MILIMÉTRICO BASADO EN TU CAPTURA */
-        .overlay {
-            position: absolute;
-            top: 11.5%;    /* Bajado un poco más */
-            left: 3.5%;    /* Movido más a la derecha para centrar con las caras */
-            width: 93%;    /* Estrechado un poco para que no se pase al final */
-            height: 82%;   /* Ajustado el alto total */
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            column-gap: 8px; /* Espacio horizontal entre caras */
-            row-gap: 4px;    /* Espacio vertical entre filas */
-        }
+.overlay {
+    position: absolute;
+    /* 1. BAJAR EL INICIO: Para no tapar los nombres de la fila de arriba */
+    top: 14.5%;    
+    
+    /* 2. CENTRAR: Un margen pequeño a la izquierda */
+    left: 3.5%;    
+    
+    /* 3. ANCHO TOTAL: Para que llegue bien al último personaje (Bea) */
+    width: 93.5%;  
+    
+    /* 4. ALTURA DE LOS CUADROS: Menos porcentaje significa cuadros más bajitos */
+    height: 77%;   
+
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    
+    /* 5. ESPACIADO ENTRE COLUMNAS: Ajusta el hueco entre caras horizontalmente */
+    column-gap: 1.2%; 
+    
+    /* 6. ESPACIADO ENTRE FILAS: Ajusta el hueco vertical */
+    row-gap: 4.5%;   
+}
 
         .cell {
             cursor: pointer;
@@ -91,3 +103,4 @@
     </script>
 </body>
 </html>
+
