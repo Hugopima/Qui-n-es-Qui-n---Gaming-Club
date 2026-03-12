@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -30,23 +30,12 @@
         .btn-game:hover { background: #00ffcc; color: #000; transform: translateY(-10px); }
         .btn-game span { display: block; font-size: 22px; font-weight: bold; margin-top: 15px; }
 
-        /* Botón de Party Trivia */
         .btn-trivia {
-            text-decoration: none;
-            color: #e94560;
-            border: 2px solid #e94560;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1em;
-            transition: 0.3s;
-            box-shadow: 0 0 10px rgba(233, 69, 96, 0.2);
+            text-decoration: none; color: #e94560; border: 2px solid #e94560;
+            padding: 15px 30px; border-radius: 50px; font-weight: bold; font-size: 1.1em;
+            transition: 0.3s; box-shadow: 0 0 10px rgba(233, 69, 96, 0.2);
         }
-        .btn-trivia:hover {
-            background: #e94560;
-            color: white;
-            box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
-        }
+        .btn-trivia:hover { background: #e94560; color: white; box-shadow: 0 0 20px rgba(233, 69, 96, 0.5); }
 
         #game-interface { display: none; width: 100%; flex-direction: column; align-items: center; }
 
@@ -59,7 +48,7 @@
         .secret-area { font-size: 20px; font-weight: bold; color: #00ffcc; }
         #char-display { background: #333; padding: 5px 15px; cursor: pointer; border-radius: 5px; border: 1px dashed #00ffcc; }
         
-        .controls { display: flex; align-items: center; gap: 15px; margin-top: 5px; }
+        .controls { display: flex; align-items: center; gap: 15px; margin-top: 5px; flex-wrap: wrap; justify-content: center; }
         select, button { padding: 8px 15px; background: #222; color: #fff; border: 1px solid #00ffcc; border-radius: 5px; cursor: pointer; font-weight: bold; }
 
         #multi-container { display: flex; flex-direction: column; align-items: center; padding: 30px 0; }
@@ -68,13 +57,23 @@
         
         .board-wrapper { position: relative; width: 968px; height: 543px; background-size: 100% 100%; outline: 3px solid #444; border-radius: 8px; }
         
-        .cell { position: absolute; cursor: pointer; border-radius: 12px; width: 80px; height: 83px; box-sizing: border-box; z-index: 10; }
-        .cell.off { background: rgba(0, 0, 0, 0.97); border: 2px solid #ff0000; box-shadow: inset 0 0 15px rgba(255,0,0,0.5); }
+        .cell { position: absolute; cursor: pointer; border-radius: 12px; width: 80px; height: 83px; box-sizing: border-box; z-index: 10; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        
+        /* --- MODOS DE ELIMINACIÓN --- */
+        /* Modo Negro (Sombra) */
+        .mode-shadow .cell.off { background: rgba(0, 0, 0, 0.97); border: 2px solid #ff0000; box-shadow: inset 0 0 15px rgba(255,0,0,0.5); }
+        
+        /* Modo Cruz (X Roja) */
+        .mode-x .cell.off { background: rgba(255, 0, 0, 0.2); border: 3px solid #ff0000; }
+        .mode-x .cell.off::before, .mode-x .cell.off::after {
+            content: ''; position: absolute; width: 100%; height: 5px; background: #ff0000; box-shadow: 0 0 10px #ff0000;
+        }
+        .mode-x .cell.off::before { transform: rotate(45deg); }
+        .mode-x .cell.off::after { transform: rotate(-45deg); }
+
     </style>
 </head>
-<body>
-
-    <div id="mute-btn" onclick="toggleMute()">🔊</div>
+<body class="mode-shadow"> <div id="mute-btn" onclick="toggleMute()">🔊</div>
 
     <div id="launcher">
         <h1>¿Quién es Quién?<br><span style="font-size: 24px; color: white;">Edición Gaming Club</span></h1>
@@ -102,6 +101,7 @@
                 <select id="rival-count" onchange="initGame()">
                     <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
                 </select>
+                <button onclick="toggleVisualMode()" id="btn-mode" style="border-color: #fbc531; color: #fbc531;">🖼️ MODO: SOMBRA</button>
                 <button onclick="initGame()">🎲 NUEVA PARTIDA</button>
             </div>
         </div>
@@ -109,7 +109,6 @@
     </div>
 
     <script>
-        // RECUERDA CAMBIAR EL ENLACE DEL BOTÓN ARRIBA POR TU URL REAL DE GITHUB PAGES
         const names1 = ["Hugo", "Alejandro", "Alberto", "Manuel", "Andrea", "Carlos Manuel", "Carlos Morilla", "Lucas", "Sergio", "Cristian", "Ana Belén", "Nyx", "INFINITYCRAFT", "SrNugget", "Gaming Club Clips", "Skibidi Toilet", "Don Pollo", "Fideos", "Adivina el Animatrónico", "Emotes Diarios", "Portal Nether", "Desafios del Club", "Mes del Aprecio", "Squid Game", "TriatlonINT", "Level UP", "Cazón (GCS3)", "UwU (GCS3)", "Podrido (GCS3)", "Xiao (MegaDeath)", "Caballos Explosivos", "BOPL", "Gallina (UCH)", "Semibot", "Tripulante", "Bonnie", "Janet", "Piper", "Shelly", "Bea"];
         const names2 = ["Arturo", "Brandon", "Óscar", "Piruzero", "David", "Agustín", "Anna", "Ángel", "Víctor Hugo", "Francisco Nolasco", "Vicente", "Jeral", "Skibidi Toilet Fav", "Hasnan", "Modric Shaolin", "Remedios y sus recetas", "Alexgamer", "Trabajoman", "Tung Tung Sahur", "67", "Discuss Time", "MegaDeath", "GC TCG", "Club de la Comedia", "Sergifroki YT", "Calcetín", "Montañista", "Hat Kid", "Girasol", "Toñi", "Peppa Pig", "Araña malvada", "Sans", "Kel", "Wendy y Abigail", "Empleado", "Sprout", "León", "Rosa", "Gus"];
 
@@ -117,6 +116,7 @@
         let currentImage = "";
         let secret = "";
         let isMuted = false;
+        let visualMode = 'shadow'; // 'shadow' o 'x'
 
         const startX = 44; 
         const cellW = 76;
@@ -140,6 +140,20 @@
         function toggleMute() {
             isMuted = !isMuted;
             document.getElementById('mute-btn').innerText = isMuted ? "🔇" : "🔊";
+        }
+
+        function toggleVisualMode() {
+            const body = document.body;
+            const btn = document.getElementById('btn-mode');
+            if (visualMode === 'shadow') {
+                visualMode = 'x';
+                body.className = 'mode-x';
+                btn.innerText = "❌ MODO: CRUZ";
+            } else {
+                visualMode = 'shadow';
+                body.className = 'mode-shadow';
+                btn.innerText = "🖼️ MODO: SOMBRA";
+            }
         }
 
         function startGame(mode) {
